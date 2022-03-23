@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
-class calculusBook extends StatelessWidget {
-  const calculusBook({Key? key}) : super(key: key);
+class economicBooks1 extends StatelessWidget {
+  const economicBooks1({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return SafeArea(
         child: Scaffold(
           body: SfPdfViewer.network(
-              'https://3lihandam69.files.wordpress.com/2018/10/calculus-10th-edition-anton.pdf',
+              'https://hostnezt.com/cssfiles/economics/Macroeconomics,%20Michael%20Parkin.pdf',
               controller: _pdfViewerController,
               key: _pdfViewerStateKey),
           appBar: AppBar(
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   )),
               IconButton(
                   onPressed: () {
-                    _pdfViewerController.zoomLevel = 2.00;
+                    _pdfViewerController.zoomLevel = 1.75;
                   },
                   icon: Icon(
                     Icons.zoom_in,

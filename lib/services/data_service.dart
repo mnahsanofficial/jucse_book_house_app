@@ -1,17 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:jucse_book_house/models.dart'; // Assuming models.dart exports all models
+import 'package:jucse_book_house/models.dart';
 
 class DataService {
   List<Semester>? _semesters;
   List<Course>? _courses;
-  List<Book>? _books;
-
-  // Private constructor for Singleton pattern (optional, but good practice for a service)
-  // DataService._internal();
-  // static final DataService _instance = DataService._internal();
-  // factory DataService() => _instance;
-  // For simplicity now, we'll use a non-singleton version.
+  // List<Book>? _books; // Removed old _books field
+  List<Teacher>? _teachers;
+  List<StudyMaterial>? _studyMaterials;
 
   Future<void> _loadData() async {
     if (_semesters == null) {
@@ -21,7 +17,7 @@ class DataService {
         _semesters = semestersJson.map((jsonMap) => Semester.fromJson(jsonMap as Map<String, dynamic>)).toList();
       } catch (e) {
         print('Failed to load or parse semesters.json: $e');
-        _semesters = []; // Initialize as empty list on error
+        _semesters = [];
       }
     }
 
@@ -29,35 +25,48 @@ class DataService {
       try {
         final String coursesJsonString = await rootBundle.loadString('assets/data/courses.json');
         final List<dynamic> coursesJson = json.decode(coursesJsonString) as List<dynamic>;
+        // Course.fromJson was already updated in previous step, no longer expects bookIds/hasContent
         _courses = coursesJson.map((jsonMap) => Course.fromJson(jsonMap as Map<String, dynamic>)).toList();
       } catch (e) {
         print('Failed to load or parse courses.json: $e');
-        _courses = []; // Initialize as empty list on error
+        _courses = [];
       }
     }
 
-    if (_books == null) {
+    // Removed loading for old books.json
+    // if (_books == null) { ... }
+
+    if (_teachers == null) {
       try {
-        final String booksJsonString = await rootBundle.loadString('assets/data/books.json');
-        final List<dynamic> booksJson = json.decode(booksJsonString) as List<dynamic>;
-        _books = booksJson.map((jsonMap) => Book.fromJson(jsonMap as Map<String, dynamic>)).toList();
+        final String teachersJsonString = await rootBundle.loadString('assets/data/teachers.json');
+        final List<dynamic> teachersJson = json.decode(teachersJsonString) as List<dynamic>;
+        _teachers = teachersJson.map((jsonMap) => Teacher.fromJson(jsonMap as Map<String, dynamic>)).toList();
       } catch (e) {
-        print('Failed to load or parse books.json: $e');
-        _books = []; // Initialize as empty list on error
+        print('Failed to load or parse teachers.json: $e');
+        _teachers = [];
+      }
+    }
+
+    if (_studyMaterials == null) {
+      try {
+        final String materialsJsonString = await rootBundle.loadString('assets/data/studymaterials.json');
+        final List<dynamic> materialsJson = json.decode(materialsJsonString) as List<dynamic>;
+        _studyMaterials = materialsJson.map((jsonMap) => StudyMaterial.fromJson(jsonMap as Map<String, dynamic>)).toList();
+      } catch (e) {
+        print('Failed to load or parse studymaterials.json: $e');
+        _studyMaterials = [];
       }
     }
   }
 
   Future<List<Semester>> getSemesters() async {
     await _loadData();
-    // Ensure _semesters is not null, even if _loadData had an issue and initialized it to []
     return List.unmodifiable(_semesters ?? []);
   }
 
   Future<List<Course>> getCoursesForSemester(String semesterId) async {
     await _loadData();
     try {
-      // Ensure _semesters and _courses are not null before proceeding
       if (_semesters == null || _courses == null) {
          print('DataService: Semesters or courses list is null after load.');
          return List.unmodifiable([]);
@@ -67,52 +76,90 @@ class DataService {
           _courses!.where((course) => semester.courseIds.contains(course.id)).toList());
     } catch (e) {
       print('Error finding semester with id $semesterId or filtering courses: $e');
-      return List.unmodifiable([]); // Return empty list
+      return List.unmodifiable([]);
     }
   }
 
   Future<Course?> getCourseDetails(String courseId) async {
     await _loadData();
     try {
-      // Ensure _courses is not null
       if (_courses == null) {
         print('DataService: Courses list is null after load for getCourseDetails.');
         return null;
       }
       return _courses!.firstWhere((course) => course.id == courseId);
     } catch (e) {
-      return null; // Not found
+      // Don't print here as it's a common case for this method to return null
+      return null;
     }
   }
 
-  Future<List<Book>> getBooksForCourse(String courseId) async {
+  // Removed old Book-related methods:
+  // Future<List<Book>> getBooksForCourse(String courseId) async { ... }
+  // Future<Book?> getBookDetails(String bookId) async { ... }
+
+  // New methods for Teachers
+  Future<List<Teacher>> getTeachers() async {
     await _loadData();
+    return List.unmodifiable(_teachers ?? []);
+  }
+
+  Future<Teacher?> getTeacherDetails(String teacherId) async {
+    await _loadData();
+    if (_teachers == null) return null;
     try {
-      // Ensure _courses and _books are not null
-      if (_courses == null || _books == null) {
-        print('DataService: Courses or books list is null after load for getBooksForCourse.');
-        return List.unmodifiable([]);
-      }
-      final course = _courses!.firstWhere((c) => c.id == courseId);
-      return List.unmodifiable(
-          _books!.where((book) => course.bookIds.contains(book.id)).toList());
+      return _teachers!.firstWhere((teacher) => teacher.id == teacherId);
     } catch (e) {
-      print('Error finding course with id $courseId or filtering books: $e');
-      return List.unmodifiable([]); // Return empty list
+      // print('Teacher with id $teacherId not found: $e'); // Avoid noisy logs for not found
+      return null;
     }
   }
 
-  Future<Book?> getBookDetails(String bookId) async {
+  Future<List<Teacher>> getTeachersForCourse(String courseId) async {
     await _loadData();
-     try {
-       // Ensure _books is not null
-      if (_books == null) {
-        print('DataService: Books list is null after load for getBookDetails.');
-        return null;
-      }
-      return _books!.firstWhere((book) => book.id == bookId);
+    if (_studyMaterials == null || _teachers == null) {
+      return List.unmodifiable([]);
+    }
+    final teacherIdsForCourse = _studyMaterials!
+        .where((material) => material.courseId == courseId && material.teacherId != null)
+        .map((material) => material.teacherId!)
+        .toSet();
+
+    if (teacherIdsForCourse.isEmpty) {
+      return List.unmodifiable([]);
+    }
+
+    final List<Teacher> teachers = _teachers!
+        .where((teacher) => teacherIdsForCourse.contains(teacher.id))
+        .toList();
+
+    return List.unmodifiable(teachers);
+  }
+
+  // New methods for StudyMaterials
+  Future<List<StudyMaterial>> getStudyMaterialsForCourse(String courseId) async {
+    await _loadData();
+    if (_studyMaterials == null) return List.unmodifiable([]);
+    return List.unmodifiable(
+        _studyMaterials!.where((material) => material.courseId == courseId).toList());
+  }
+
+  Future<List<StudyMaterial>> getStudyMaterialsForCourseByTeacher(String courseId, String teacherId) async {
+    await _loadData();
+    if (_studyMaterials == null) return List.unmodifiable([]);
+    return List.unmodifiable(_studyMaterials!
+        .where((material) => material.courseId == courseId && material.teacherId == teacherId)
+        .toList());
+  }
+
+  Future<StudyMaterial?> getStudyMaterialDetails(String materialId) async {
+    await _loadData();
+    if (_studyMaterials == null) return null;
+    try {
+      return _studyMaterials!.firstWhere((material) => material.id == materialId);
     } catch (e) {
-      return null; // Not found
+      // print('StudyMaterial with id $materialId not found: $e'); // Avoid noisy logs
+      return null;
     }
   }
 }

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "sm_calc_anton",
+    "title": "Calculus, 10th Edition by Anton",
+    "type": "pdf",
+    "path": "assets/pdf/calculus.pdf",
+    "isLocal": true,
+    "courseId": "cse101",
+    "teacherId": null
+  },
+  {
+    "id": "sm_econ_macro",
+    "title": "Macroeconomics",
+    "type": "pdf",
+    "path": "assets/pdf/macroeconomics_placeholder.pdf",
+    "isLocal": true,
+    "courseId": "cse111",
+    "teacherId": null
+  },
+  {
+    "id": "sm_econ_micro",
+    "title": "Microeconomics",
+    "type": "pdf",
+    "path": "assets/pdf/microeconomics_placeholder.pdf",
+    "isLocal": true,
+    "courseId": "cse111",
+    "teacherId": null
+  },
+  {
+    "id": "sm_physics_notes_t1",
+    "title": "Physics Lecture Notes Week 1-5",
+    "type": "pdf",
+    "path": "assets/pdf/physics_notes_placeholder.pdf",
+    "isLocal": true,
+    "courseId": "cse103",
+    "teacherId": "teacher1"
+  },
+  {
+    "id": "sm_physics_video_t1",
+    "title": "Intro to Electromagnetism (Video)",
+    "type": "link",
+    "path": "https://www.youtube.com/example_physics_video",
+    "isLocal": false,
+    "courseId": "cse103",
+    "teacherId": "teacher1"
+  },
+  {
+    "id": "sm_english_writing_guide_t2",
+    "title": "Effective Technical Writing Guide",
+    "type": "note",
+    "path": "This guide covers key aspects of technical writing including clarity, conciseness, and audience awareness. Refer to chapter 3 for citation styles.",
+    "isLocal": false,
+    "courseId": "cse109",
+    "teacherId": "teacher2"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "sem1",
+    "name": "First Semester",
+    "courseIds": ["cse101", "cse103", "cse109", "cse107", "cse107L", "cse111"]
+  },
+  {
+    "id": "sem2",
+    "name": "Second Semester",
+    "courseIds": []
+  }
+]

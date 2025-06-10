@@ -1,211 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:jucse_book_house/home.dart';
-import 'package:jucse_book_house/semester/eighthSemester.dart';
-import 'package:jucse_book_house/semester/fifthSemester.dart';
-import 'package:jucse_book_house/semester/firstSemester.dart';
-import 'package:jucse_book_house/semester/fourthSemester.dart';
-import 'package:jucse_book_house/semester/secondSemester.dart';
-import 'package:jucse_book_house/semester/seventhSemester.dart';
-import 'package:jucse_book_house/semester/sixthSemester.dart';
-import 'package:jucse_book_house/semester/thirdSemester.dart';
-class semesterList extends StatelessWidget {
-  const semesterList({Key? key}) : super(key: key);
+import 'package:jucse_book_house/models.dart';
+import 'package:jucse_book_house/services.dart';
+import 'package:jucse_book_house/pages.dart'; // Updated import
+
+// Removed old semester page imports as they will be obsolete
+// import 'package:jucse_book_house/semester/firstSemester.dart';
+// ... and others
+
+class SemesterList extends StatefulWidget { // Changed to StatefulWidget
+  const SemesterList({Key? key}) : super(key: key);
+
+  @override
+  _SemesterListState createState() => _SemesterListState();
+}
+
+class _SemesterListState extends State<SemesterList> {
+  late Future<List<Semester>> _semestersFuture;
+  final DataService _dataService = DataService();
+
+  @override
+  void initState() {
+    super.initState();
+    _semestersFuture = _dataService.getSemesters();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
-        title: Text('Semester List', style: TextStyle(fontSize: 35),),
-        centerTitle: true,
+        title: Text('Semester List'),
       ),
-      body: Center(
-          child: GridView.extent(
-            primary: false,
-            padding: const EdgeInsets.all(16),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            maxCrossAxisExtent: 200.0,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('First Semester', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return firstSemester();
+      body: FutureBuilder<List<Semester>>(
+        future: _semestersFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text('No semesters found.'));
+          }
 
-                              })),)
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Second Semester', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return secondSemester();
-
-                              })),)
-
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Third', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return thirdSemester();
-
-                              })),)
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Four Semester', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return fourthSemester();
-
-                              })),)
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Fifth Semester', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return fifthSemester();
-
-                              })),)
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Sixth Semester', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return sixthSemester();
-
-                              })),)
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Seventh \nSemester', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return seventhSemester();
-
-                              })),)
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Eight Semester', style: TextStyle(fontSize: 20)),
-                        SizedBox(height: 20,),
-                        FlatButton(child: Text('Details' ,style: TextStyle(fontSize: 20.0),),
-                          color: Colors.white,
-                          textColor: Colors.blueAccent,
-                          onPressed: () => Navigator.push
-                            (context,
-                              MaterialPageRoute(builder: (context)
-                              {
-                                return eighthSemester();
-
-                              })),)
-                      ],
-                    )),
-                color: Colors.blue,
-              ),
-            ],
-          )),
+          final semesters = snapshot.data!;
+          return Center( // Added Center to mimic original layout for GridView
+            child: GridView.extent(
+              primary: false,
+              padding: const EdgeInsets.all(16),
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              maxCrossAxisExtent: 200.0,
+              children: semesters.map((semester) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  child: Center(
+                      child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(semester.name, style: TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        child: Text('Details', style: TextStyle(fontSize: 20.0)),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.blueAccent,
+                        ),
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CourseListPage(
+                              semesterId: semester.id,
+                              semesterName: semester.name,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
+                  color: Colors.blue, // Keeping the original container color
+                );
+              }).toList(),
+            ),
+          );
+        },
+      ),
     );
   }
 }

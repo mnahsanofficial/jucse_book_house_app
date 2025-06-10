@@ -1,0 +1,26 @@
+[
+  {
+    "id": "calc_anton",
+    "title": "Calculus, 10th Edition by Anton",
+    "pdfPath": "assets/pdf/calculus.pdf",
+    "isLocal": true
+  },
+  {
+    "id": "calc_local_test",
+    "title": "Calculus (Local PDF Test)",
+    "pdfPath": "assets/pdf/calculus.pdf",
+    "isLocal": true
+  },
+  {
+    "id": "econ_macro",
+    "title": "Macroeconomics",
+    "pdfPath": "assets/pdf/macroeconomics_placeholder.pdf",
+    "isLocal": true
+  },
+  {
+    "id": "econ_micro",
+    "title": "Microeconomics",
+    "pdfPath": "assets/pdf/microeconomics_placeholder.pdf",
+    "isLocal": true
+  }
+]

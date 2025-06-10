@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.jucse_book_house">
+    package="com.jucse.bookhouse.app">
+    <!-- Add internet permission -->
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="jucse_book_house"
         android:name="${applicationName}"

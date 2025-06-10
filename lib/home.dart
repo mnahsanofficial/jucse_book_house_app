@@ -8,10 +8,8 @@ class home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('JUCSE Book House', style: TextStyle(fontSize: 35),),
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 100,
+        title: Text('JUCSE Book House'), // Removed style, centerTitle, toolbarHeight
+        titleSpacing: 00.0, // Kept this as it wasn't part of the theme
       ),
       body: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -22,9 +20,11 @@ class home extends StatelessWidget {
               Text('Welcome to \nJUCSE Book House',
                 textAlign: TextAlign.center, style:TextStyle(fontSize: 30),),
              SizedBox(height: 20,),
-             FlatButton(child: Text('See Semester List' ,style: TextStyle(fontSize: 20.0),),
-               color: Colors.blueAccent,
-               textColor: Colors.white,
+             ElevatedButton(child: Text('See Semester List' ,style: TextStyle(fontSize: 20.0),),
+               style: ElevatedButton.styleFrom(
+                 backgroundColor: Colors.blueAccent,
+                 foregroundColor: Colors.white,
+               ),
                onPressed: () => Navigator.push
                 (context,
                   MaterialPageRoute(builder: (context)

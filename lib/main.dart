@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jucse_book_house/home.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized(); // Added this line
   runApp(const MyApp());
 }
 
@@ -14,9 +15,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
-
         primarySwatch: Colors.blue,
+        appBarTheme: AppBarTheme(
+          toolbarHeight: 100,
+          centerTitle: true,
+          titleTextStyle: TextStyle(fontSize: 35, color: Colors.white),
+          backgroundColor: Colors.blue, // Explicitly set for clarity
+          elevation: 4.0,
+        ),
       ),
       home: home(),
       debugShowCheckedModeBanner: false,

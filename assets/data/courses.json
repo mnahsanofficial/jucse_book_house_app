@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cse101",
+    "title": "CSE-101: Mathematics I (Calculus and Coordinate Geometry)",
+    "semesterId": "sem1",
+    "bookIds": ["calc_anton"],
+    "hasContent": true
+  },
+  {
+    "id": "cse103",
+    "title": "CSE-103: Physics (Electricity, Magnetism and Optics)",
+    "semesterId": "sem1",
+    "bookIds": [],
+    "hasContent": false
+  },
+  {
+    "id": "cse109",
+    "title": "CSE-109: Communicative English",
+    "semesterId": "sem1",
+    "bookIds": [],
+    "hasContent": false
+  },
+  {
+    "id": "cse107",
+    "title": "CSE-107: Electrical Circuits",
+    "semesterId": "sem1",
+    "bookIds": [],
+    "hasContent": false
+  },
+  {
+    "id": "cse107L",
+    "title": "CSE-107: Electrical Circuits Laboratory",
+    "semesterId": "sem1",
+    "bookIds": [],
+    "hasContent": false
+  },
+  {
+    "id": "cse111",
+    "title": "CSE-111: Economics",
+    "semesterId": "sem1",
+    "bookIds": ["econ_macro", "econ_micro"],
+    "hasContent": true
+  }
+]
